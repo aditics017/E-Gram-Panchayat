@@ -1,0 +1,42 @@
+<% layout("/layouts/boilerplate") %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= service.title %></title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <h1><%= service.title %></h1>
+    <p><strong>Category:</strong> <%= service.category.join(', ') %></p>
+    <p><strong>Description:</strong> <%= service.description %></p>
+    <p><strong>Location:</strong> <%= service.location %>, <%= service.state %></p>
+    <p><strong>Processing Time:</strong> <%= service.processingTime.toDateString() %></p>
+    <p><strong>Fee:</strong> <%= service.fee ? `₹${service.fee}` : "Free" %></p>
+    <p><strong>Approval Required:</strong> <%= service.approvalRequired ? "Yes" : "No" %></p>
+
+    <% if (service.requiredDocuments && service.requiredDocuments.length > 0) { %>
+        <h3>Required Documents:</h3>
+        <ul>
+            <% service.requiredDocuments.forEach(doc => { %>
+                <li><a href="<%= doc.url %>" target="_blank"><%= doc.filename %></a></li>
+            <% }) %>
+        </ul>
+    <% } %>
+    
+
+    <% if (user && user.role === 'admin') { %>
+        <a href="/services/<%= service._id %>/edit" class="btn btn-warning">Edit</a>
+        <form action="/services/<%= service._id %>?_method=DELETE" method="POST" style="display:inline;">
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+    <% } else { %>
+        <a href="/services/<%= service._id %>/apply" class="btn btn-success">Apply</a>
+    <% } %>
+
+    <br><br>
+    <a href="/services" class="btn btn-secondary">Back to Services</a>
+</body>
+</html>

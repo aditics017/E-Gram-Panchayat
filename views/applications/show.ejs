@@ -1,0 +1,57 @@
+<% layout("/layouts/boilerplate") %>
+
+<h1>Applications</h1>
+
+<% if (applications.length === 0) { %>
+    <p>No applications submitted yet.</p>
+<% } else { %>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Citizen</th>
+                <th>Service</th>
+                <th>Status</th>
+                <th>Submitted On</th>
+                <th>Reviewed By</th>
+                <th>Actions</th> <!-- Added Actions Column -->
+            </tr>
+        </thead>
+        <tbody>
+            <% applications.forEach(app => { %>
+                <tr>
+                    <td><%= app.user ? app.user.name : "Unknown" %></td>
+                    <td><a href="/services/<%= app.service._id %>"><%= app.service.title %></a></td>
+                    <td>
+                        <% if (app.status === "pending") { %>
+                            <span class="badge bg-warning">Pending</span>
+                        <% } else if (app.status === "approved") { %>
+                            <span class="badge bg-success">Approved</span>
+                        <% } else { %>
+                            <span class="badge bg-danger">Rejected</span>
+                        <% } %>
+                    </td>
+                    <td><%= new Date(app.submittedAt).toDateString() %></td>
+                    <td><%= app.reviewedBy ? app.reviewedBy.name : "Admin" %></td>
+                    <td>
+                        <!-- Delete Button (Only visible if the logged-in user owns the application) -->
+                        <% if (user && app.user && app.user._id && user._id && app.user._id.toString() === user._id.toString()) { %>
+                            <form id="delete-form-<%= app._id %>" action="/applications/<%= app._id %>?_method=DELETE" method="POST">
+                                <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('<%= app._id %>')">Delete</button>
+                            </form>
+                            
+                            <script>
+                                function confirmDelete(appId) {
+                                    if (confirm("Are you sure you want to delete this application? This action cannot be undone!")) {
+                                        document.getElementById(`delete-form-${appId}`).submit();
+                                    }
+                                }
+                            </script>
+                            
+                        <% } %>
+                    </td>
+                </tr>
+                
+            <% }) %>
+        </tbody>
+    </table>
+<% } %>

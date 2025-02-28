@@ -1,0 +1,41 @@
+<% layout("/layouts/boilerplate") %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services</title>
+    <link rel="stylesheet" href="/styles.css"> <!-- Include your CSS file -->
+</head>
+<body>
+    <h1>Available Services</h1>
+    
+    <% if (user && user.role === 'admin') { %>
+        <a href="/services/new" class="btn btn-primary">Add New Service</a>
+    <% } %>
+
+    <div class="services-container">
+        <% services.forEach(service => { %>
+            <div class="service-card">
+                <h2><%= service.title %></h2>
+                <p><strong>Category:</strong> <%= service.category.join(', ') %></p>
+                <p><strong>Description:</strong> <%= service.description %></p>
+                <p><strong>Location:</strong> <%= service.location %>, <%= service.state %></p>
+                <p><strong>Processing Time:</strong> <%= service.processingTime.toDateString() %></p>
+                <p><strong>Fee:</strong> <%= service.fee ? `₹${service.fee}` : "Free" %></p>
+                
+                <% if (user && user.role === 'admin') { %>
+                    <a href="/services/<%= service._id %>/edit" class="btn btn-warning">Edit</a>
+                    <form action="/services/<%= service._id %>?_method=DELETE" method="POST" style="display:inline;">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                <% } else { %>
+                    <a href="/services/<%= service._id %>" class="btn btn-info">View Details</a>
+                    <a href="/services/<%= service._id %>/apply" class="btn btn-success">Apply</a>
+                <% } %>
+            </div>
+        <% }) %>
+    </div>
+</body>
+</html>

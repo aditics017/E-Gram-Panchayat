@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Gram Panchayat - Admin</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-dark">
+        <div class="container">
+            <a class="navbar-brand text-white" href="/admin/dashboard">E-Gram Panchayat</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-item nav-link text-white" href="/logout">Logout</a>
+            </div>            
+        </div>
+    </nav>
+
+
+<div class="container mt-4">
+    <h1 class="text-center">Admin Dashboard</h1>
+    <h2 class="text-center">Manage Services</h2>
+
+    <% if (services.length > 0) { %>
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Service Name</th>
+                    <th>Description</th>
+                    <th>Categories</th>
+                    <th>Fee (INR)</th>
+                    <th>Processing Time</th>
+                    <th>Approval Required?</th>
+                    <th>Location</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% services.forEach((service, index) => { %>
+                    <tr>
+                        <td><%= index + 1 %></td>
+                        <td><%= service.title %></td>
+                        <td><%= service.description %></td>
+                        <td>
+                            <% service.category.forEach(category => { %>
+                                <span class="badge bg-primary"><%= category %></span>
+                            <% }); %>
+                        </td>
+                        <td><%= service.fee || 'Free' %></td>
+                        <td><%= service.processingTime || 'N/A' %></td>
+                        <td><%= service.approvalRequired ? 'Yes' : 'No' %></td>
+                        <td>
+                            <%= service.location %>, <%= service.state %>
+                            <br>
+                        </td>
+                        <td>
+                            <a href="/admin/services/edit/<%= service._id %>" class="btn btn-warning btn-sm">Edit</a>
+                            <form action="/admin/services/delete/<%= service._id %>" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this service?');">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    <% } else { %>
+        <p class="text-center mt-3">No services available.</p>
+    <% } %>
+
+    <div class="text-center mt-4">
+        <a href="/admin/services/new" class="btn btn-success">Add New Service</a>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/script.js"></script>
+</body>
+</html>
+

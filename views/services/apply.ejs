@@ -1,0 +1,16 @@
+<% layout("/layouts/boilerplate") %>
+
+<h1>Apply for <%= service.title %></h1>
+
+<form action="/services/<%= service._id %>/apply" method="POST">
+    <label for="name">Full Name:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+
+    <label for="phone">Phone Number:</label>
+    <input type="tel" id="phone" name="phone" required>
+
+    <button type="submit" class="btn btn-success">Submit Application</button>
+</form>

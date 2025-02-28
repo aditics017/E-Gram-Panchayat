@@ -1,0 +1,111 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="row mt-3"> 
+    <div class="col-6 offset-3">
+        <!-- Center the heading only -->
+        <div class="text-center">
+            <h1>Sign Up / Register for E-Gram Panchayat</h1> 
+        </div> 
+        
+        <form id="signupForm" action="/signup" method="POST" class="needs-validation" novalidate> 
+            <!-- Full Name -->
+            <div class="mb-3"> 
+                <label for="name" class="form-label">Full Name</label> 
+                <input name="name" id="name" type="text" class="form-control" required /> 
+                <div class="invalid-feedback">Please enter your full name.</div>
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3"> 
+                <label for="email" class="form-label">E-mail</label> 
+                <input name="email" id="email" type="email" class="form-control" required /> 
+                <div class="invalid-feedback">Please enter a valid email address.</div>
+            </div> 
+
+            <!-- Mobile Number -->
+            <div class="mb-3"> 
+                <label for="mobile" class="form-label">Mobile Number</label> 
+                <input name="mobile" id="mobile" type="tel" class="form-control" pattern="[0-9]{10}" required />
+                <div class="form-text">Enter a 10-digit mobile number.</div>
+                <div class="invalid-feedback">Please enter a valid 10-digit mobile number.</div>
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3"> 
+                <label for="password" class="form-label">Password</label> 
+                <div class="input-group">
+                    <input name="password" id="password" type="password" class="form-control" required />
+                    <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                        <i class="fa fa-eye"></i>
+                    </button>
+                    <div class="invalid-feedback">Please enter a password.</div>
+                </div>
+            </div> 
+
+            <!-- Confirm Password -->
+            <div class="mb-3"> 
+                <label for="confirmPassword" class="form-label">Confirm Password</label> 
+                <input name="confirmPassword" id="confirmPassword" type="password" class="form-control" required /> 
+                <div class="invalid-feedback">Passwords do not match.</div>
+            </div> 
+
+            <!-- Terms & Conditions -->
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="terms" required>
+                <label class="form-check-label" for="terms">
+                    I accept the <a href="/terms">Terms & Conditions</a>
+                </label>
+                <div class="invalid-feedback">You must accept the Terms & Conditions.</div>
+            </div>
+
+            <!-- Sign Up Button -->
+            <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+
+            <!-- Already have an account? -->
+            <div class="text-center mt-3">
+                <a href="/login">Already have an account? Log In</a>
+            </div>
+        </form> 
+    </div> 
+</div>
+
+<!-- JavaScript for Form Validation & Password Toggle -->
+<script>
+    // Password Toggle
+    document.getElementById("togglePassword").addEventListener("click", function() {
+        const passwordField = document.getElementById("password");
+        const icon = this.querySelector("i");
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            icon.classList.replace("fa-eye", "fa-eye-slash");
+        } else {
+            passwordField.type = "password";
+            icon.classList.replace("fa-eye-slash", "fa-eye");
+        }
+    });
+
+    // Bootstrap Form Validation
+    document.getElementById("signupForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        let form = this;
+        if (!form.checkValidity()) {
+            form.classList.add("was-validated");
+            return;
+        }
+
+        // Check if passwords match
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirmPassword").value;
+        if (password !== confirmPassword) {
+            document.getElementById("confirmPassword").classList.add("is-invalid");
+            return;
+        } else {
+            document.getElementById("confirmPassword").classList.remove("is-invalid");
+        }
+
+        // If everything is valid, submit the form
+        form.submit();
+    });
+</script>

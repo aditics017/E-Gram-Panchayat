@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Service - E-Gram Panchayat</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-dark">
+        <div class="container">
+            <a class="navbar-brand text-white" href="/admin/dashboard">E-Gram Panchayat</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-item nav-link text-white" href="/logout">Logout</a>
+            </div>            
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h2 class="text-center">Edit Service</h2>
+    
+        <form action="/admin/services/edit/<%= service._id %>" method="POST" enctype="application/x-www-form-urlencoded" class="needs-validation" novalidate>
+    
+            <div class="mb-3">
+                <label for="title" class="form-label">Service Title</label>
+                <input type="text" id="title" name="title" class="form-control" value="<%= service.title %>" required>
+                <div class="invalid-feedback">Please enter a service title.</div>
+            </div>
+        
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea id="description" name="description" class="form-control" required><%= service.description %></textarea>
+                <div class="invalid-feedback">Please provide a description.</div>
+            </div>
+        
+            <div class="mb-3">
+                <label class="form-label">Category</label>
+                <div class="d-flex flex-wrap">
+                    <% let categories = ["Agriculture", "Water", "Land", "Infrastructure", "Education", "Health", "Welfare", "Finance", "Employment", "Other"]; %>
+                    <% categories.forEach(category => { %>
+                        <div class="form-check me-3">
+                            <input class="form-check-input" type="checkbox" name="category[]" value="<%= category %>"
+                            <% if (service.category && service.category.includes(category)) { %> checked <% } %> />
+                            <label class="form-check-label"><%= category %></label>
+                        </div>
+                    <% }); %>
+                </div>
+                <div class="invalid-feedback">Please select at least one category.</div>
+            </div>
+        
+            <div class="mb-3">
+                <label for="fee" class="form-label">Fee (INR)</label>
+                <input type="number" id="fee" name="fee" class="form-control" value="<%= service.fee %>" required>
+                <div class="invalid-feedback">Please enter a valid fee amount.</div>
+            </div>
+        
+            <div class="mb-3">
+                <label for="processingTime" class="form-label">Processing Time</label>
+                <input type="date" id="processingTime" name="processingTime" class="form-control" 
+                value="<%= new Date(service.processingTime).toISOString().split('T')[0] %>" required>
+                <div class="invalid-feedback">Please select a processing time.</div>
+            </div>
+        
+            <div class="mb-3">
+                <label class="form-label">Approval Required</label>
+                <div>
+                    <input type="radio" id="approvalYes" name="approvalRequired" value="true" <% if (service.approvalRequired) { %>checked<% } %> required>
+                    <label for="approvalYes">Yes</label>
+                    <input type="radio" id="approvalNo" name="approvalRequired" value="false" <% if (!service.approvalRequired) { %>checked<% } %>>
+                    <label for="approvalNo">No</label>
+                </div>
+                <div class="invalid-feedback">Please select an approval option.</div>
+            </div>
+        
+            <div class="mb-3">
+                <label for="location" class="form-label">Location</label>
+                <input type="text" id="location" name="location" class="form-control" value="<%= service.location %>">
+            </div>
+        
+            <div class="mb-3">
+                <label for="state" class="form-label">State</label>
+                <input type="text" id="state" name="state" class="form-control" value="<%= service.state %>">
+            </div>
+        
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <a href="/admin/services" class="btn btn-secondary">Cancel</a>
+            </div>
+        
+        </form> <!-- Ensure form tag is closed at the end -->
+        
+    </div>
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/script.js"></script>
+    
+</body>
+</html>

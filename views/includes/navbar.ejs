@@ -1,0 +1,44 @@
+<nav class="navbar navbar-expand-md bg-light border-bottom sticky-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/"><i class="fa-solid fa-landmark"></i> E-Gram Panchayat</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-link" href="/services">Services</a>
+                <a class="nav-link" href="/applications">Apply Online</a>
+                <a class="nav-link" href="/applications/status">Status</a>
+            </div>
+            
+            <!-- Centered Search Form -->
+            <div class="mx-auto">
+                <form class="d-flex" role="search" action="/services" method="GET">
+                    <input class="form-control me-2" type="search" name="q" placeholder="Search Services" aria-label="Search" style="border-radius: 30px !important;">
+                    <button class="btn btn-outline-success d-flex align-items-center" type="submit" style="border-radius: 30px !important;">
+                        <i class="fa-solid fa-search"></i> Search
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Right-Aligned Links -->
+        <div class="navbar-nav ms-auto">
+            <a class="nav-link" href="/admin/login"><b>Admin</b></a>
+        
+            <% if (typeof currUser !== "undefined" && currUser) { %>
+                <% if (currUser.role && currUser.role === "admin") { %>
+                    <a class="nav-link" href="/admin/dashboard"><b>Admin Dashboard</b></a>
+                <% } %>
+                <a class="nav-link" href="/logout">Log out</a>
+            <% } else { %>
+                <a class="nav-link" href="/signup"><b>Sign up</b></a>
+                <a class="nav-link" href="/login"><b>Log in</b></a>
+            <% } %>
+            
+            
+        </div>        
+    </div>
+</nav>
